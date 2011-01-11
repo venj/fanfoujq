@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+  <link type="text/css" rel="stylesheet" href="/stylesheets/application.css">
+  <title>其实我很喜欢你...</title>
+</head>
+<body>
+  <h2>其实我很喜欢你...（饭否版みみうち）</h2>
+  <% if @flash %>
+    <div class="warn"><%= @flash %></div>
+  <% end %>
+  <div id="form">
+    <form action="/check" method="post" accept-charset="utf-8">
+      <table id="form_table">
+        <tr>
+          <td class="form_title">用户名</td><td><input name="name" value="<%= @username %>"></td>
+        </tr>
+        <tr>
+          <td class="form_title">密码</td><td><input type="password" name="password" value=""></td>
+        </tr>
+        <tr>
+          <td class="form_title">
+            我喜欢
+          </td><td><input name="fanfouer" value=""></td>
+        </tr>
+        <tr>
+          <td class="form_title">&nbsp;</td><td><input type="submit" name="" value="提交"></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+  <div id="description">
+    <h3>使用说明</h3>
+    <ol>
+      <li>
+        原始创意提出：<a href="http://fanfou.com/statuses/IaG4NlCTwlE">http://fanfou.com/statuses/IaG4NlCTwlE</a>
+      </li>
+      <li>
+        密码是被明文保存在数据库里的，如果不放心，请勿使用。(谁推荐一个靠谱的加密算法给我，谢谢！)
+      </li>
+      <li>
+        输入用户的ID，比如：http://fanfou.com/<strong>fanfou</strong> 里的加粗部分。
+      </li>
+      <li>源代码已经推送到<a href="https://github.com/venj/fanfoujq">Github</a>上</li>
+    </ol>
+  </div>
+</body>
+</html>

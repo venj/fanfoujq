@@ -1,0 +1,6 @@
+development: 
+  adapter: sqlite3 
+  database: fanfouer.db 
+# production: 
+#   adapter: postgresql
+#   database: participant.db

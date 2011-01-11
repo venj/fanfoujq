@@ -3,24 +3,32 @@ require 'sinatra'
 require 'fanfou'
 require 'active_record'
 require 'yaml'
-require 'base64'
 
 configure do 
   # connect to the database 
   dbconfig = YAML.load(File.read('config/database.yml')) 
-  ActiveRecord::Base.establish_connection dbconfig['production'] 
+  ActiveRecord::Base.establish_connection dbconfig['development'] 
 
   begin 
-    ActiveRecord::Schema.define do 
+    ActiveRecord::Schema.define(:version => 1) do 
       create_table :fanfouers do |t| 
         t.string :name, :null => false
         t.string :password, :null => false
         t.string :fanfouer, :null => false
-      end 
-    end 
+      end
+    end
   rescue ActiveRecord::StatementInvalid 
     # do nothing - gobble up the error 
-  end 
+  end
+  begin
+    ActiveRecord::Schema.define(:version => 2) do 
+      remove_column :fanfouers, :password
+      add_column :fanfouers, :message, :text
+    end
+  rescue ActiveRecord::StatementInvalid 
+    
+  end
+  
 end 
 
 # define a simple model 
@@ -46,17 +54,16 @@ post '/check' do
     fanfouer.save
   end
   
-  fanfou = Fanfou.new(@params[:name], @params[:password])
-  unless fanfou.authenticate
-    @flash = "用户名或密码错误。"
-    erb :index
-  else
-    fanfouer_2 = Fanfouer.find_by_name(fanfouer.fanfouer)
-    if !fanfouer_2.nil? && fanfouer_2.fanfouer == fanfouer.name
-      fanfou_2 = Fanfou.new(fanfouer_2.name, fanfouer_2.password)
-      fanfou.send_private_messages(fanfouer_2.name, "#{fanfouer_2.name}，其实我也很喜欢你，我们交往吧!")
-      fanfou_2.send_private_messages(fanfouer.name, "#{fanfouer.name}，其实我也很喜欢你，我们交往吧!")
-    end
-    erb :check
+  # Initialize system user
+  fanfou = Fanfou.new
+  
+  # Follow him anyway
+  fanfou.follow(@params[:name])
+  
+  fanfouer_2 = Fanfouer.find_by_name(fanfouer.fanfouer)
+  if !fanfouer_2.nil? && fanfouer_2.fanfouer == fanfouer.name
+    fanfou.send_private_messages(fanfouer.name, "#{fanfou.profile(fanfouer_2.name).screen_name}(http://fanfou.com/#{fanfouer_2.name})让我跟你说，TA很喜欢你。TA还想说：#{fanfouer_2.message}")
+    fanfou.send_private_messages(fanfouer_2.name, "#{fanfou.profile(fanfouer.name).screen_name}(http://fanfou.com/#{fanfouer.name})让我跟你说，TA很喜欢你。TA还想说：#{fanfouer.message}")
   end
+  erb :check
 end

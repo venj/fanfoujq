@@ -18,12 +18,16 @@
           <td class="form_title">用户名</td><td><input name="name" value="<%= @username %>"></td>
         </tr>
         <tr>
-          <td class="form_title">密码</td><td><input type="password" name="password" value=""></td>
-        </tr>
-        <tr>
           <td class="form_title">
             我喜欢
           </td><td><input name="fanfouer" value=""></td>
+        </tr>
+        <tr>
+          <td class="form_title message">
+            我想对ta说
+          </td><td>
+            <textarea name="message" rows="5" cols="35"></textarea>
+          </td>
         </tr>
         <tr>
           <td class="form_title">&nbsp;</td><td><input type="submit" name="" value="提交"></td>
@@ -32,16 +36,39 @@
     </form>
   </div>
   <div id="description">
-    <h3>使用说明</h3>
+    <h3>
+      说明：
+    </h3>
+    <p>
+      在这里记下你最喜欢的饭友的名字。如果你喜欢的人也在这里记录过ta喜欢的人，并且那个人就是你，<br>那么系统就会向你和你喜欢的人都发送一条私信，告知你们正互相喜欢着对方。
+    </p>
+    <ul>
+      <li>
+        请务必关注：私信信使：<a href="http://fanfou.com/ffmsgr">http://fanfou.com/ffmsgr</a> 否则你将收不到私信。
+      </li>
+      <li>
+        输入你的用户名，以及你喜欢的人的饭否ID，不需要加@。
+      </li>
+      <li>
+        注意，不是饭否昵称，ID是用户页地址：如，http://fanfou.com/<strong>fanfou</strong> 里的加粗部分。
+      </li>
+      <li>
+        你想对ta说的话请限制在100字以下（140字减去“用户名，空格，标点等的长度”）。
+      </li>
+      <li>
+        私信格式参考：<em>你的昵称</em>(http://fanfou.com/<em>your_id</em>)让我跟你说，TA很喜欢你。TA还想说：<em>你的留言</em>
+      </li>
+    </ul>
+    
+    <h3>
+      关于本程序：
+    </h3>
     <ol>
       <li>
         原始创意提出：<a href="http://fanfou.com/statuses/IaG4NlCTwlE">http://fanfou.com/statuses/IaG4NlCTwlE</a>
       </li>
       <li>
-        密码是被明文保存在数据库里的，如果不放心，请勿使用。(谁推荐一个靠谱的加密算法给我，谢谢！)
-      </li>
-      <li>
-        输入用户的ID，比如：http://fanfou.com/<strong>fanfou</strong> 里的加粗部分。
+        之前在这里填写过的用户的密码已经被清除。请放心。（不放心的可以去看源码验证。）
       </li>
       <li>源代码已经推送到<a href="https://github.com/venj/fanfoujq">Github</a>上</li>
     </ol>

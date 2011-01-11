@@ -10,6 +10,10 @@ body {
     font-weight:bold;
 }
 
+.message {
+    vertical-align:top;
+}
+
 table.user_table {
     border:1px gray solid;
 }

@@ -4,10 +4,12 @@ require 'fanfou_user'
 require 'json'
 
 class Fanfou
-  def initialize
+  def initialize(username, password)
     @api_base = 'http://api.fanfou.com'
+    @username = username
+    @password = password
     @curl = Curl::Easy.new
-    @curl.userpwd = "ffmsgr:zzzzzzzz" # my system password
+    @curl.userpwd = "#{username}:#{password}" # my system password
   end
   
   def authenticate

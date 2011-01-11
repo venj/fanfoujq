@@ -28,7 +28,6 @@ configure do
   rescue ActiveRecord::StatementInvalid 
     
   end
-  
 end 
 
 # define a simple model 
@@ -44,8 +43,9 @@ post '/check' do
   @params.each do |k, v|
     v.strip!
   end
-  
-  fanfouer = Fanfouer.find_by_name(@params[:name])
+  user = Fanfou.new(@params["name"], @params["password"])
+  @params.delete("password")
+  fanfouer = Fanfouer.find_by_name(@params["name"])
   if fanfouer.nil?
     fanfouer = Fanfouer.new(@params)
     fanfouer.save
@@ -55,15 +55,20 @@ post '/check' do
   end
   
   # Initialize system user
-  fanfou = Fanfou.new
+  fanfou = Fanfou.new("ffmsgr", "zzzzzzzz")
   
   # Follow him anyway
-  fanfou.follow(@params[:name])
+  fanfou.follow(@params["name"])
   
   fanfouer_2 = Fanfouer.find_by_name(fanfouer.fanfouer)
-  if !fanfouer_2.nil? && fanfouer_2.fanfouer == fanfouer.name
-    fanfou.send_private_messages(fanfouer.name, "#{fanfou.profile(fanfouer_2.name).screen_name}(http://fanfou.com/#{fanfouer_2.name})让我跟你说，TA很喜欢你。TA还想说：#{fanfouer_2.message}")
-    fanfou.send_private_messages(fanfouer_2.name, "#{fanfou.profile(fanfouer.name).screen_name}(http://fanfou.com/#{fanfouer.name})让我跟你说，TA很喜欢你。TA还想说：#{fanfouer.message}")
+  if user.authenticate
+    if !fanfouer_2.nil? && fanfouer_2.fanfouer == fanfouer.name
+      fanfou.send_private_messages(fanfouer.name, "#{fanfou.profile(fanfouer_2.name).screen_name}(http://fanfou.com/#{fanfouer_2.name})让我跟你说，TA很喜欢你。TA还想说：#{fanfouer_2.message}")
+      fanfou.send_private_messages(fanfouer_2.name, "#{fanfou.profile(fanfouer.name).screen_name}(http://fanfou.com/#{fanfouer.name})让我跟你说，TA很喜欢你。TA还想说：#{fanfouer.message}")
+    end
+    erb :check
+  else
+    @flash = "用户名或密码错误."
+    erb :index
   end
-  erb :check
 end
